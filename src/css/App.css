@@ -1,3 +1,12 @@
 @import "tailwindcss";
 
 @tailwind utilities;
+
+
+.card {
+  @apply bg-white shadow-md rounded-lg p-4 border;
+}
+
+.button {
+    @apply bg-amber-200 border-2 rounded-xl self-center p-2 hover:scale-95 hover:cursor-pointer active:scale-90;
+}
