@@ -1,15 +1,23 @@
-import SendButton from "./components/send-button/send-button"
-import CardFuncionalidade from "./components/card-funcionalidade/card-funcionalidade"
-
+import Navbar from "./components/navbar/navbar"
 
 function App() {
   return (
     <>
-      <div className="flex flex-col items-center justify-center gap-5 h-screen bg-gradient-to-r from-amber-200 to-amber-500">
-      <h1 className="text-3xl font-bold underline text-orange-700">Hello World Laranja!</h1>
-      <p className="text-5xl font-semibold line-through text-blue-700">Texto estilizado com tailwind</p>
-      <SendButton />
-      <CardFuncionalidade />
+      <Navbar />
+      
+      <div className="pt-40 ">
+        {/* As cores e tamanho das seções são somente para teste, depois serão substituídas por imagens e textos reais. */}
+        
+      <section id="home" className="h-100 bg-amber-800">
+      </section>
+      <section id="alunos" className="h-100 bg-amber-700">
+      </section>
+      <section id="professores" className="h-100 bg-amber-600">
+      </section>
+      <section id="cadastro" className="h-200 bg-amber-500">
+      </section>
+      <section id="login" className="h-90 bg-amber-400">
+      </section>
       </div>
 
     </>
