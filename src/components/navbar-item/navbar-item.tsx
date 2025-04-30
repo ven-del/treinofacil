@@ -4,7 +4,7 @@ interface NavbarItemProps {
   isActive: boolean;
 }
 
-function NavbarItem({ targetId, label }: NavbarItemProps) {
+function NavbarItem({ targetId, label, isActive }: NavbarItemProps) {
   const scrollToSection = () => {
     const element = document.getElementById(targetId);
     element?.scrollIntoView({ behavior: 'smooth' });

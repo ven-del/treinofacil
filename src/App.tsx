@@ -16,7 +16,7 @@ function App() {
       </section>
       <section id="cadastro" className="h-200 bg-amber-500">
       </section>
-      <section id="login" className="h-90 bg-amber-400">
+      <section id="login" className="h-900 bg-amber-400">
       </section>
       </div>
 
