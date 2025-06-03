@@ -1,10 +1,9 @@
 @import "tailwindcss";
 
-@tailwind utilities;
 
 
 .navbar {
-    @apply fixed top-0 left-0 w-full flex items-start justify-between gap-5 h-40 bg-gradient-to-tr from-[#3B82F6] to-[#60A5FA];
+    @apply fixed top-0 left-0 w-full flex items-start justify-between gap-5 h-40 bg-gradient-to-tr from-[#3B82F6] to-[#60A5FA] z-10;
     font-family: "Open Sans", sans-serif;
 }
 
@@ -29,7 +28,7 @@
 }
 
 .button {
-    @apply text-slate-500 font-semibold py-2 px-4 mb-2 rounded-full hover:bg-gradient-to-tr from-[#2563EB] to-[#60A5FA] hover:text-white hover:font-bold transition duration-300 ease-in-out;
+    @apply text-slate-500 font-semibold py-2 px-4 mb-2 rounded-full hover:bg-gradient-to-tr from-[#2563EB] to-[#60A5FA] hover:text-white hover:font-bold cursor-pointer transition duration-300 ease-in-out;
 }
 
 .button.active {
