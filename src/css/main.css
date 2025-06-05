@@ -34,3 +34,7 @@
 .button.active {
     @apply bg-gradient-to-br from-[#2563EB] to-[#60A5FA] text-white font-bold py-2 px-4 border rounded-full hover:bg-blue-700 hover:font-bold transition duration-300 ease-in-out;
 }
+
+.footer-link {
+    @apply cursor-pointer hover:underline underline-offset-2;
+}
