@@ -1,9 +1,9 @@
 import { Outlet } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 
 
-const SiteLayout = () => {
+const LandingPageLayout = () => {
   return (
     <div className="flex flex-col justify-between min-h-screen">
       <Navbar />
@@ -15,4 +15,4 @@ const SiteLayout = () => {
   );
 };
 
-export default SiteLayout;
+export default LandingPageLayout;
