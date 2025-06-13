@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import SiteLayout from "../../SiteLayout";
+import SiteLayout from "../../layouts/LandingPageLayout";
 
 const Paths = () => {
   return (
