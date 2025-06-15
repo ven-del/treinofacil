@@ -17,7 +17,7 @@ const Login = () => {
 
     console.log(data);
     alert("Login realizado com sucesso!");
-    navigate('/app/dashboard');
+    navigate('/app/exercicios');
   };
 
   return (
