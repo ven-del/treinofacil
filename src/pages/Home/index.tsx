@@ -5,13 +5,13 @@ import TeacherSection from "../../sections/TeacherSection";
 const Home = () => {
     return (
       <main>
-        <section>
+        <section id="home">
           <HeroSection />
         </section>
-        <section>
+        <section id="alunos">
           <StudentSection />
         </section>
-        <section>
+        <section id="professores">
           <TeacherSection />
         </section>
       </main>
