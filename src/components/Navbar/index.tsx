@@ -64,11 +64,7 @@ function Navbar() {
             </li>
           </ul>
         ) : (
-          <Link to="/">
-            <h2 className="text-white text-3xl font-bold hover:underline">
-              Voltar para a Home
-            </h2>
-          </Link>
+          ''
         )}
       </div>
 

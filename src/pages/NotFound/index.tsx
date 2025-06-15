@@ -12,7 +12,7 @@ const NotFound = () => {
         </p>
         <p
           className="rounded-2xl text-lg font-extrabold cursor-pointer duration-200 active:scale-95 drop-shadow-2xl hover:underline"
-          onClick={() => navigate("/cadastro")}
+          onClick={() => navigate("/")}
         >
           Voltar para a página inicial
         </p>
