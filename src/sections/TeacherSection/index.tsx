@@ -35,7 +35,7 @@ const TeacherSection = () => {
         {cardInfo.map((card, index) => (
           <div
             key={index}
-            className="card w-fit duration-300 ease-in-out hover:-translate-y-3"
+            className="card w-fit duration-300 ease-in-out hover:-translate-y-3 cursor-pointer"
           >
             <img
               src={card.image}
