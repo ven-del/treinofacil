@@ -17,7 +17,7 @@ const Login = () => {
 
     console.log(data);
     alert("Login realizado com sucesso!");
-    navigate('/dashboard');
+    navigate('/app/dashboard');
   };
 
   return (
