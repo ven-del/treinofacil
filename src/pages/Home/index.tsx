@@ -1,14 +1,20 @@
+import HeroSection from "../../sections/HeroSection";
 import StudentSection from "../../sections/StudentSection";
 import TeacherSection from "../../sections/TeacherSection";
 
 const Home = () => {
-    return (  
-        <main>
-            <section>
-                <StudentSection />
-                <TeacherSection />
-            </section>
-        </main>
+    return (
+      <main>
+        <section>
+          <HeroSection />
+        </section>
+        <section>
+          <StudentSection />
+        </section>
+        <section>
+          <TeacherSection />
+        </section>
+      </main>
     );
 }
  

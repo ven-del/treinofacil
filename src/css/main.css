@@ -1,8 +1,12 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
+
+* {
+    font-family: "Open Sans", sans-serif;
+}
 .navbar {
     @apply w-full flex items-start justify-between gap-5 h-40 bg-gradient-to-tr from-[#3B82F6] to-[#60A5FA] z-10;
-    font-family: "Open Sans", sans-serif;
 }
 
 .navbar_logo {
