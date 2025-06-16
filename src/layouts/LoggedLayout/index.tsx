@@ -6,9 +6,9 @@ import Header from "../../components/Header";
 
 const LoggedLayout = () => {
   return (
-    <div className="flex gap-3 h-screen">
+    <div className="flex h-screen">
       <Sidebar />
-      <div className="flex flex-col justify-between w-[80%]">
+      <div className="flex flex-col justify-between w-full">
         <Header />
         <Outlet />
         <LoggedFooter />

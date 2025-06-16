@@ -24,10 +24,10 @@ const Sidebar = () => {
   return (
     <div
       className={`bg-gray-50 border-r border-gray-200 flex flex-col transition-all duration-300 ease-in-out
-        ${isCollapsed ? "w-16" : "w-64"}`}
+        ${isCollapsed ? "w-16 py-2" : "w-64"}`}
     >
       {/* Header */}
-      <div className="border-b border-gray-200 p-4">
+      <div className="border-b border-gray-200 p-4 h-24.2">
         <button
           onClick={toggleSidebar}
           className={`w-full p-3 rounded-lg transition-colors duration-200 cursor-pointer flex items-center
