@@ -7,6 +7,7 @@ import {
   Target,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
+import { usePageTitle } from "../../hooks/usePageTitle";
 
 const menuItems = [
   { title: "Treino de hoje", icon: Filter, url: "/app/exercicios", isActive: true, },
@@ -17,6 +18,7 @@ const menuItems = [
 ];
 
 const Sidebar = () => {
+  usePageTitle();
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleSidebar = () => setIsCollapsed((prev) => !prev);
@@ -24,7 +26,7 @@ const Sidebar = () => {
   return (
     <div
       className={`bg-gray-50 border-r border-gray-200 flex flex-col transition-all duration-300 ease-in-out
-        ${isCollapsed ? "w-16 py-2" : "w-64"}`}
+        ${isCollapsed ? "w-18 py-2" : "w-64"}`}
     >
       {/* Header */}
       <div className="border-b border-gray-200 p-4 h-24.2">
