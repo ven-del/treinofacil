@@ -1,11 +1,10 @@
+import UnderConstruction from "../../components/UnderConstruction";
 import { usePageTitle } from "../../hooks/usePageTitle";
 
 const HealthTracking = () => {
   usePageTitle();
-    return (
-      <div className="flex flex-col items-center justify-center">
-        <h1 className="text-4xl font-bold">Oi, eu sou o Acompanhamento Físico!</h1>
-      </div>
+  return (
+    <UnderConstruction />
     );
 }
  

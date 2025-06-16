@@ -4,12 +4,11 @@ import { useLocation } from 'react-router-dom';
 
 const TITLES: Record<string, string> = {
     "/app/exercicios": "Dashboard do Aluno",
-    "/app/exercicios/:id": "Detalhes do Exercício", // Este é um placeholder, a função getTitle trata melhor
     "/app/calendario": "Calendário de Treinos",
     "/app/plano-de-treino": "Plano de Treinamento",
     "/app/acompanhamento-fisico": "Acompanhamento Físico",
     "/app/quests": "Quests",
-    "/app/quests/:id": "Detalhes da Quest" // Este é um placeholder, a função getTitle trata melhor
+    "/app/profile": "Perfil do Aluno"
 };
 
 // Mantenha sua função getTitle fora do hook se ela for usada em outros lugares,
