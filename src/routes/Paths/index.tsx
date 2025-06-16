@@ -12,6 +12,7 @@ import HealthTracking from "../../pages/HealthTracking";
 import Quests from "../../pages/Quests";
 import ExerciseDetails from "../../pages/ExerciseDetails";
 import QuestDetails from "../../pages/QuestDetails";
+import Profile from "../../pages/Profile";
 
 const Paths = () => {
   return (
@@ -32,6 +33,7 @@ const Paths = () => {
             <Route path="acompanhamento-fisico" element={<HealthTracking />} />
             <Route path="quests" element={<Quests />} />
             <Route path="quests/:id" element={<QuestDetails />} />
+            <Route path="profile" element={<Profile />} />
           </Route>
         </Routes>
       </BrowserRouter>

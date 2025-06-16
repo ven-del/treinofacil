@@ -1,11 +1,11 @@
 import UnderConstruction from "../../components/UnderConstruction";
 import { usePageTitle } from "../../hooks/usePageTitle";
 
-const Calendar = () => {
-  usePageTitle();
+const Profile = () => {
+    usePageTitle();
     return (
-      <UnderConstruction />
+        <UnderConstruction />
     );
 }
  
-export default Calendar;
+export default Profile;

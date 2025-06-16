@@ -4,12 +4,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 const TITLES: Record<string, string> = {
   "/app/exercicios": "Dashboard do Aluno",
-  "/app/exercicios/:id": "Detalhes do Exercício",
   "/app/calendario": "Calendário de Treinos",
   "/app/plano-de-treino": "Plano de Treinamento",
   "/app/acompanhamento-fisico": "Acompanhamento Físico",
   "/app/quests": "Quests",
-  "/app/quests/:id": "Detalhes da quest"
+  "/app/profile": "Perfil do Aluno",
 };
 
 function getTitle(pathname: string) {
@@ -62,7 +61,7 @@ const Header = () => {
       <div className="grid grid-cols-3 items-center px-15 py-2 border-b border-gray-200">
         <div></div>
         <div className="flex justify-center">
-          <h1 className="text-2xl">{title}</h1>
+          <h1 className="text-3xl text-(--text-color)">{title}</h1>
         </div>
         <div
           onClick={(e) => {
