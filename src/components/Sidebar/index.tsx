@@ -36,7 +36,7 @@ const Sidebar = () => {
           <div className="flex items-center justify-center w-8 h-8 shrink-0">
             <img
               src="/assets/icons/logged-logo.svg"
-              className="w-6 h-6 text-blue-500"
+              className="w-30 text-blue-500"
             />
           </div>
           {!isCollapsed && (
