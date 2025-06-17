@@ -80,7 +80,7 @@ const exercisesData = {
     completed: false,
     image: "/assets/triceps-barrinha-demo.jpg",
     instructions:
-    "",
+    "Imagine uma descrição muito detalhada de como pegar o tríceps barrinha e fazer as repetições da forma ideal e mais efetiva possível",
     notes: "",
   },
 };
