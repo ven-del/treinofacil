@@ -10,7 +10,7 @@ const LoggedLayout = () => {
       <Sidebar />
       <div className="flex flex-col justify-between w-full">
         <Header />
-        <div className="overflow-y-auto">
+        <div className="overflow-y-auto h-full mt-5">
           <Outlet />
         </div>
         <LoggedFooter />

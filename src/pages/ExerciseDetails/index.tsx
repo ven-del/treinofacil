@@ -106,8 +106,8 @@ const ExerciseDetails = () => {
   };
 
   return (
-    <div className=" w-[95%] mx-auto my-6">
-      <div className="bg-gray-50 rounded-2xl shadow-sm border border-gray-200 p-8 ">
+    <div className=" flex-1 justify-center items center p-6 overflow-y-auto w-[85%] h-[95%] border rounded-xl border-gray-200 drop-shadow-xl mx-auto bg-gray-50">
+      <div className="p-8 ">
         <div className="flex items-center justify-end mb-8">
           <button
             onClick={handleBackClick}
@@ -123,15 +123,13 @@ const ExerciseDetails = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-gray-100 rounded-xl overflow-hidden">
               <img
                 src={exercise.image}
                 alt={`Demonstração do exercício ${exercise.name}`}
-                className="w-full h-full object-contain"
+                className="w-200 h-100 rounded-xl"
               />
-            </div>
 
-            <div className="bg-gray-50 rounded-xl p-6">
+            <div className="bg-white rounded-xl p-6">
               <h3 className="text-xl font-semibold text-gray-900 mb-4">
                 Instruções:
               </h3>
