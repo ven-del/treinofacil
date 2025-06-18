@@ -1,5 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../../services/backendService"; // ajuste o caminho se necessário
+import { useState } from "react";
 
 interface LoginFormInputs {
   email: string;
@@ -13,11 +15,22 @@ const Login = () => {
     formState: { errors },
   } = useForm<LoginFormInputs>();
   const navigate = useNavigate();
-  const onSubmit = (data: LoginFormInputs) => {
+  const [loginError, setLoginError] = useState("");
 
-    console.log(data);
-    alert("Login realizado com sucesso!");
-    navigate('/app/exercicios');
+  const onSubmit = async (data: LoginFormInputs) => {
+    try {
+      const result = await loginUser(data);
+      localStorage.setItem("token", result.token);
+
+      alert("Login realizado com sucesso!");
+      navigate("/app/exercicios");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setLoginError(err.message);
+      } else {
+        setLoginError("Ocorreu um erro ao fazer login.");
+      }
+    }
   };
 
   return (
@@ -47,6 +60,8 @@ const Login = () => {
         {errors.senha && (
           <span className="text-red-500">{errors.senha.message}</span>
         )}
+
+        {loginError && <span className="text-red-500">{loginError}</span>}
 
         <button
           type="submit"
