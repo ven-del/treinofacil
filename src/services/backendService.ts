@@ -1,10 +1,14 @@
+import { getTokenJWT } from "./authService";
+
 export type RegisterPayload = {
     nome: string;
     email: string;
     password: string;
+    display_name: string;
+    image_url: string;
   };
   
-  const API_URL = "http://localhost:3000"; // substitui pela real
+  const API_URL = 'http://localhost:3000';
   
 export async function registerUser(data: RegisterPayload) {
     console.log('Dados que vão para o back: ', data)
@@ -19,7 +23,9 @@ export async function registerUser(data: RegisterPayload) {
       throw new Error(error.message || "Erro no cadastro");
     }
   
-    return await response.json();
+    const result = await response.json();
+    console.log('Dados recebidos do registro:', result);
+    return result;
 }
   
 export async function loginUser(data: { email: string; password: string }) {
@@ -33,19 +39,22 @@ export async function loginUser(data: { email: string; password: string }) {
       const errorData = await response.json();
       throw new Error(errorData.message || "Erro ao fazer login");
     }
+  const result = await response.json();
   
-    const result = await response.json();
     localStorage.setItem("usuarioLogado", JSON.stringify(result));
     return result;
 }
   
-export async function getExerciciosDoDia(alunoId: string, data?: string) {
-  const query = data ? `?data=${data}` : "";
-  const response = await fetch(`http://localhost:3000/api/exercicios-dia/${alunoId}${query}`, {
+export async function getExerciciosDoDia() {
+  const token = getTokenJWT();
+  if (!token) throw new Error("Usuário não autenticado");
+  const response = await fetch(`http://localhost:3000/api/aluno/exercicios`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
+    credentials: "include",
   });
 
   if (!response.ok) {
@@ -53,14 +62,17 @@ export async function getExerciciosDoDia(alunoId: string, data?: string) {
   }
 
   const json = await response.json();
-  return json.data.exercicios;
+  return json;
 }
 
 export async function getDetalheExercicio(treinoExercicioId: string) {
-  const response = await fetch(`http://localhost:3000/api/exercicios-dia/detalhe/${treinoExercicioId}`, {
+  const token = getTokenJWT();
+  if (!token) throw new Error("Usuário não autenticado");
+  const response = await fetch(`http://localhost:3000/api/aluno/exercicios/${treinoExercicioId}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
   });
 
@@ -69,14 +81,17 @@ export async function getDetalheExercicio(treinoExercicioId: string) {
   }
 
   const json = await response.json();
-  return json.data;
+  return json;
 }
 
 export async function getPlanoDoAluno() {
-  const response = await fetch("http://localhost:3000/api/planos", {
+  const token = getTokenJWT();
+  if (!token) throw new Error("Usuário não autenticado");
+  const response = await fetch("http://localhost:3000/api/aluno/planos", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     credentials: "include",
   });
@@ -86,14 +101,17 @@ export async function getPlanoDoAluno() {
   }
 
   const json = await response.json();
-  return json.data;
+  return json;
 }
 
 export async function getQuestsDoAluno() {
-  const response = await fetch("http://localhost:3000/api/quests", {
+  const token = getTokenJWT();
+  if (!token) throw new Error("Usuário não autenticado");
+  const response = await fetch("http://localhost:3000/api/aluno/quests", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     credentials: "include",
   });

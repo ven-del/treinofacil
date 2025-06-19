@@ -18,12 +18,6 @@ interface WeeklySchedule {
   };
 }
 
-interface TrainingType {
-  id: string;
-  name: string;
-  description: string;
-  color: string;
-}
 
 
 const TrainingPlan = () => {
@@ -35,25 +29,25 @@ const TrainingPlan = () => {
     {
       id: "muscle_mass",
       label: "Massa muscular",
-      icon: <img src="/public/assets/icons/icone-massa-muscular.svg" className="w-6 h-6" />,
+      icon: <img src="/assets/icons/icone-massa-muscular.svg" className="w-6 h-6" />,
       completed: true,
     },
     {
       id: "muscle_core",
       label: "Músculos Core",
-      icon: <img src="/public/assets/icons/icone-musculos-core.svg" className="w-6 h-6" />,
+      icon: <img src="/assets/icons/icone-musculos-core.svg" className="w-6 h-6" />,
       completed: true,
     },
     {
       id: "resistance",
       label: "Resistência",
-      icon: <img src="/public/assets/icons/icone-resistencia.svg" className="w-6 h-6" />,
+      icon: <img src="/assets/icons/icone-resistencia.svg" className="w-6 h-6" />,
       completed: true,
     },
     {
       id: "weight_loss",
       label: "Perda de Peso",
-      icon: <img src="/public/assets/icons/icone-perda-de-peso.svg" className="w-6 h-6" />,
+      icon: <img src="/assets/icons/icone-perda-de-peso.svg" className="w-6 h-6" />,
       completed: true,
     },
   ];
@@ -72,59 +66,43 @@ const TrainingPlan = () => {
     },
   };
 
-  const trainingTypes: TrainingType[] = [
-    {
-      id: "A",
-      name: "Treino A",
-      description: "Membros inferiores. Foco em agachamento e deslocamento.",
-      color: "border-blue-300",
-    },
-    {
-      id: "B",
-      name: "Treino B",
-      description: "Membros superiores. Foco em puxadas e pressões.",
-      color: "border-green-300",
-    },
-    {
-      id: "C",
-      name: "Treino C",
-      description: "Core e estabilização. Foco em abdominais e prancha.",
-      color: "border-purple-300",
-    },
-  ];
 
   useEffect(() => {
-    async function carregarPlano() {
+    const fetchPlano = async () => {
       try {
-        const dados = await getPlanoDoAluno();
-        setPlano(dados);
-      } catch (err) {
-        console.error("Erro ao carregar plano de treinamento:", err);
+        const planoData = await getPlanoDoAluno();
+        setPlano(planoData[0] || null);
+      } catch (error) {
+        console.error("Erro ao buscar plano de treinamento:", error);
+        setPlano(null);
       } finally {
         setLoading(false);
       }
-    }
+    };
 
-    carregarPlano();
+    fetchPlano();
   }, []);
 
   if (loading) {
     return (
-      <div className="h-screen bg-gray-100 flex items-center justify-center">
-        {plano ? (
-          <pre className="bg-white p-4 rounded text-sm text-gray-700 overflow-x-auto">
-            {JSON.stringify(plano, null, 2)}
-          </pre>
-        ) : (
-          <p className="text-gray-500">Nenhum plano encontrado</p>
-        )}
+      <div className="h-full bg-gray-100 flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+  if (!plano) {
+    return (
+      <div className="h-full bg-gray-100 flex items-center justify-center">
+        <div className="text-gray-500">Não há planos para este usuário</div>
       </div>
     );
   }
 
     return (
       <div className="flex-1 justify-center items center p-6 overflow-y-auto w-[85%] h-[95%] border rounded-xl border-gray-200 drop-shadow-xl mx-auto bg-gray-50">
+        <h1 className="text-3xl font-bold text-(--color-primary) text-center mb-5">
+          {plano.nome}
+        </h1>
         {/* Foco do treino */}
         <div className="bg-white rounded-lg p-6 mb-6 border border-gray-200">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">
@@ -132,7 +110,10 @@ const TrainingPlan = () => {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {trainingFocus.map((focus) => (
-              <div key={focus.id} className="flex items-center space-x-3 bg-gray-100 w-fit px-3">
+              <div
+                key={focus.id}
+                className="flex items-center space-x-3 bg-gray-100 w-fit px-3"
+              >
                 <div className="flex items-center justify-center w-10 h-10 rounded-full">
                   {focus.icon}
                 </div>
@@ -181,14 +162,21 @@ const TrainingPlan = () => {
 
         {/* Descrição dos treinos */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {trainingTypes.map((training) => (
-          <div key={training.id} className="bg-white border-2 border-gray-200 rounded-lg p-4">
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">{training.name}</h3>
-            <p className="text-gray-600 text-sm leading-relaxed">{training.description}</p>
-          </div>
-        ))}
+          {plano.treinos.map((treino: any) => (
+            <div
+              key={treino.id}
+              className="bg-white border-2 border-gray-200 rounded-lg p-4"
+            >
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                {treino.nome}
+              </h3>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                {treino.descricao}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
     );
 }
  

@@ -3,6 +3,13 @@ import { useRef, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import { limparSessao } from "../../services/authService";
 
+type UserData = {
+  nome: string;
+  display_name: string;
+  image_url: string;
+  email: string;
+};
+
 const TITLES: Record<string, string> = {
   "/app/exercicios": "Dashboard do Aluno",
   "/app/calendario": "Calendário de Treinos",
@@ -31,8 +38,16 @@ const Header = () => {
     const location = useLocation();
     const title = getTitle(location.pathname);
     const [showMenu, setShowMenu] = useState(false);
+    const [, setUserData] = useState<UserData | null>(null);
     const menuRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const storedUser = localStorage.getItem("usuarioLogado");
+        if (storedUser) {
+            setUserData(JSON.parse(storedUser));
+        }
+    }, []);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -66,15 +81,16 @@ const Header = () => {
         navigate("/login");
       }
     };
+    const [nomeAluno, setNomeAluno] = useState<string | null>(null);
+  const [imagemAluno, setImagemAluno] = useState<string | null>(null);
   
-  const [nomeAluno, setNomeAluno] = useState<string | null>(null);
-
   useEffect(() => {
     const dadosUsuario = localStorage.getItem("usuarioLogado");
     if (dadosUsuario) {
       try {
         const usuario = JSON.parse(dadosUsuario);
-        setNomeAluno(usuario.user.nome);
+        setNomeAluno(usuario.display_name || usuario.nome);
+        setImagemAluno(usuario.image_url);
       } catch (err) {
         console.error("Erro ao recuperar usuário do localStorage", err);
       }
@@ -94,12 +110,11 @@ const Header = () => {
             e.stopPropagation();
             setShowMenu((prev) => !prev);
           }}
-          className="justify-self-end flex items-center cursor-pointer"
-        >
-          <img
-            src="/assets/icons/logo.png"
-            alt=""
-            className="h-20 w-20 rounded-full"
+          className="justify-self-end flex items-center cursor-pointer gap-3"
+        >          <img
+            src={imagemAluno || '/assets/icons/logo.png'}
+            alt={`Foto de perfil de ${nomeAluno}`}
+            className="h-20 w-20 rounded-full object-cover"
           />
           <h2>{nomeAluno}</h2>
           <ChevronDown color="#6C757D" />

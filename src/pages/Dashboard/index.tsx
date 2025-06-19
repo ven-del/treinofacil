@@ -32,14 +32,14 @@ const Dashboard = () => {
         if (!usuario || !usuario.id) throw new Error("Usuário não logado");
 
         const hoje = new Date().toISOString().split("T")[0];
-        const dados = await getExerciciosDoDia(usuario.id, hoje);
+        const dados = await getExerciciosDoDia();
 
         const workoutData: WorkoutData = {
           title: "Seu Treino de Hoje",
           date: hoje.split("-").reverse().join("/"),
           category: "Treino do Dia",
           exercises: dados.map((item: any) => ({
-            id: item.treino_exercicio_id,
+            id: item.id,
             name: item.exercicio_nome,
             series: item.series,
             repetitions: item.repeticoes,
@@ -48,6 +48,7 @@ const Dashboard = () => {
           })),
         };
 
+        console.log("Exercícios carregados:", dados);
         setWorkoutData(workoutData);
       } catch (error) {
         console.error("Erro ao carregar exercícios do dia:", error);
@@ -56,7 +57,6 @@ const Dashboard = () => {
         setLoading(false);
       }
     };
-
     carregarExercicios();
   }, []);
 
@@ -90,7 +90,7 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="h-screen bg-gray-100 flex items-center justify-center">
+      <div className="h-full bg-gray-100 flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
       </div>
     );
@@ -98,8 +98,8 @@ const Dashboard = () => {
 
   if (!workoutData) {
     return (
-      <div className=" bg-gray-100 flex items-center justify-center">
-        <div className="text-gray-500">Erro ao carregar dados do treino</div>
+      <div className=" bg-gray-100 flex items-center justify-center h-full">
+        <div className="text-gray-500">Nenhum treino disponível para este usuário</div>
       </div>
     );
   }

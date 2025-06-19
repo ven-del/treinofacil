@@ -19,3 +19,9 @@ export function setUsuarioLogado(usuario: any) {
 export function limparSessao() {
   localStorage.removeItem(USUARIO_KEY);
 }
+
+export function getTokenJWT() {
+  const usuario = JSON.parse(localStorage.getItem("usuarioLogado") || "{}");
+
+  return usuario?.session?.access_token || null;
+}
