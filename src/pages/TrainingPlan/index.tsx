@@ -1,3 +1,4 @@
+import { getPlanoDoAluno } from "../../services/backendService";
 import { usePageTitle } from "../../hooks/usePageTitle";
 import { useEffect, useState } from "react";
 import { Check } from "lucide-react";
@@ -28,6 +29,7 @@ interface TrainingType {
 const TrainingPlan = () => {
   usePageTitle();
   const [loading, setLoading] = useState(true);
+  const [plano, setPlano] = useState<any | null>(null);
 
   const trainingFocus: TrainingFocus[] = [
     {
@@ -92,13 +94,30 @@ const TrainingPlan = () => {
   ];
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1000);
-    return () => clearTimeout(timer);
+    async function carregarPlano() {
+      try {
+        const dados = await getPlanoDoAluno();
+        setPlano(dados);
+      } catch (err) {
+        console.error("Erro ao carregar plano de treinamento:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    carregarPlano();
   }, []);
 
   if (loading) {
     return (
       <div className="h-screen bg-gray-100 flex items-center justify-center">
+        {plano ? (
+          <pre className="bg-white p-4 rounded text-sm text-gray-700 overflow-x-auto">
+            {JSON.stringify(plano, null, 2)}
+          </pre>
+        ) : (
+          <p className="text-gray-500">Nenhum plano encontrado</p>
+        )}
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
       </div>
     );

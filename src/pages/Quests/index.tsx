@@ -1,53 +1,16 @@
 import { usePageTitle } from "../../hooks/usePageTitle";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { getQuestsDoAluno } from "../../services/backendService";
 import { Check, ChevronRight } from "lucide-react";
 
 interface Quest {
   id: string;
-  title: string;
-  description: string;
-  reward: string;
-  completed: boolean;
+  titulo: string;
+  descricao: string;
+  status: string;
 }
 
-const mockQuests: Quest[] = [
-  {
-    id: "1",
-    title: "Primeiro Treino",
-    description: "Complete seu primeiro treino na plataforma.",
-    reward: "Medalha Iniciante",
-    completed: true,
-  },
-  {
-    id: "2",
-    title: "7 Dias de Consistência",
-    description: "Treine por 7 dias consecutivos.",
-    reward: "Medalha Consistente",
-    completed: false,
-  },
-  {
-    id: "3",
-    title: "Compartilhe seu Progresso",
-    description: "Compartilhe seu progresso com um amigo.",
-    reward: "Medalha Social",
-    completed: false,
-  },
-  {
-    id: "4",
-    title: "Desafio de Pernas",
-    description: "Complete todos os treinos de pernas do mês.",
-    reward: "Medalha Pernas de Aço",
-    completed: false,
-  },
-  {
-    id: "5",
-    title: "Maratona de Exercícios",
-    description: "Realize 50 exercícios diferentes.",
-    reward: "Medalha Maratonista",
-    completed: false,
-  },
-];
 
 const Quests = () => {
   usePageTitle();
@@ -56,33 +19,34 @@ const Quests = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchQuests = async () => {
+    async function carregarQuests() {
       try {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        setQuests(mockQuests);
-      } catch (error) {
-        console.error("Erro ao carregar quests:", error);
+        const dados = await getQuestsDoAluno();
+        setQuests(dados);
+      } catch (err) {
+        console.error("Erro ao carregar quests:", err);
+        setQuests([]);
       } finally {
         setLoading(false);
       }
-    };
+    }
 
-    fetchQuests();
+    carregarQuests();
   }, []);
 
-  const toggleQuestCompletion = (
-    questId: string,
-    event: React.MouseEvent
-  ) => {
-    event.stopPropagation();
-    setQuests((prevQuests) =>
-      prevQuests.map((quest) =>
-        quest.id === questId
-          ? { ...quest, completed: !quest.completed }
-          : quest
-      )
-    );
-  };
+  // const toggleQuestCompletion = (
+  //   questId: string,
+  //   event: React.MouseEvent
+  // ) => {
+  //   event.stopPropagation();
+  //   setQuests((prevQuests) =>
+  //     prevQuests.map((quest) =>
+  //       quest.id === questId
+  //         ? { ...quest, completed: !quest.completed }
+  //         : quest
+  //     )
+  //   );
+  // };
 
   const handleCardClick = (questId: string, event: React.MouseEvent) => {
     const target = event.target as HTMLElement;
@@ -126,27 +90,26 @@ const Quests = () => {
                 <div className="flex items-center space-x-4">
                   <div
                     className="checkbox-container"
-                    onClick={(event) => toggleQuestCompletion(quest.id, event)}
                   >
                     <div
                       className={`w-6 h-6 rounded border-2 flex items-center justify-center cursor-pointer ${
-                        quest.completed
+                        quest.status === 'completed'
                           ? "bg-green-500 border-green-500"
                           : "border-gray-300"
                       }`}
                     >
-                      {quest.completed && (
+                      {quest.status && (
                         <Check className="w-4 h-4 text-white" />
                       )}
                     </div>
                   </div>
                   <div>
                     <h4 className="text-xl font-semibold text-(--title-color) mb-2">
-                      {quest.title}
+                      {quest.titulo}
                     </h4>
-                    <p className="text-(--text-color) mb-1">{quest.description}</p>
+                    <p className="text-(--text-color) mb-1">{quest.descricao}</p>
                     <span className="text-sm text-(--text-color) font-medium">
-                      Recompensa: {quest.reward}
+                      Recompensa: ainda a definir
                     </span>
                   </div>
                 </div>

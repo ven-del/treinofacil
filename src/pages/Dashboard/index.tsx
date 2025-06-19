@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { getExerciciosDoDia } from "../../services/backendService";
+import { getUsuarioLogado } from "../../services/authService";
 import { Check, ChevronRight } from "lucide-react";
 
 interface Exercise {
@@ -18,81 +20,44 @@ interface WorkoutData {
   exercises: Exercise[];
 }
 
-
-const mockWorkoutData: WorkoutData = {
-  title: "Seu Treino De Hoje — B",
-  date: "31 de fevereiro de 2025",
-  category: "Pernas",
-  exercises: [
-    {
-      id: "1",
-      name: "Agachamento",
-      series: 3,
-      repetitions: 15,
-      restTime: 1,
-      completed: true,
-    },
-    {
-      id: "2",
-      name: "Rosca direta",
-      series: 3,
-      repetitions: 15,
-      restTime: 1,
-      completed: false,
-    },
-    {
-      id: "3",
-      name: "Rosca alternada",
-      series: 3,
-      repetitions: 15,
-      restTime: 1,
-      completed: false,
-    },
-    {
-      id: "4",
-      name: "Leg press",
-      series: 4,
-      repetitions: 12,
-      restTime: 2,
-      completed: false,
-    },
-    {
-      id: "5",
-      name: "Extensão de pernas",
-      series: 3,
-      repetitions: 20,
-      restTime: 1,
-      completed: false,
-    },
-    {
-      id: "6",
-      name: "Tríceps Barrinha",
-      series: 3,
-      repetitions: 20,
-      restTime: 1,
-      completed: false,
-    },
-  ],
-};
-
 const Dashboard = () => {
   const [workoutData, setWorkoutData] = useState<WorkoutData | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchWorkoutData = async () => {
+    const carregarExercicios = async () => {
       try {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        setWorkoutData(mockWorkoutData);
+        const usuario = getUsuarioLogado();
+        if (!usuario || !usuario.id) throw new Error("Usuário não logado");
+
+        const hoje = new Date().toISOString().split("T")[0];
+        const dados = await getExerciciosDoDia(usuario.id, hoje);
+
+        const workoutData: WorkoutData = {
+          title: "Seu Treino de Hoje",
+          date: hoje.split("-").reverse().join("/"),
+          category: "Treino do Dia",
+          exercises: dados.map((item: any) => ({
+            id: item.treino_exercicio_id,
+            name: item.exercicio_nome,
+            series: item.series,
+            repetitions: item.repeticoes,
+            restTime: 1,
+            completed: false, 
+          })),
+        };
+
+        setWorkoutData(workoutData);
       } catch (error) {
-        console.error("Erro ao carregar dados do treino:", error);
+        console.error("Erro ao carregar exercícios do dia:", error);
+        setWorkoutData(null);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchWorkoutData();
+    carregarExercicios();
   }, []);
 
   const toggleExerciseCompletion = (

@@ -43,21 +43,15 @@ const Register = () => {
         className="flex flex-col gap-4 max-w-sm mx-auto mt-10"
       >
         <input
-          {...register("nomeCompleto", {
+          {...register("nome", {
             required: "Nome completo é obrigatório",
           })}
           placeholder="Nome completo"
           className="border p-2 rounded"
         />
-        {errors.nomeCompleto && (
-          <span className="text-red-500">{errors.nomeCompleto.message}</span>
+        {errors.nome && (
+          <span className="text-red-500">{errors.nome.message}</span>
         )}
-
-        <input
-          {...register("nomeExibicao")}
-          placeholder="Nome de exibição (opcional)"
-          className="border p-2 rounded"
-        />
 
         <input
           {...register("email", {
@@ -75,7 +69,7 @@ const Register = () => {
         )}
 
         <input
-          {...register("senha", {
+          {...register("password", {
             required: "Senha é obrigatória",
             minLength: { value: 6, message: "Mínimo de 6 caracteres" },
           })}
@@ -83,8 +77,8 @@ const Register = () => {
           placeholder="Senha"
           className="border p-2 rounded"
         />
-        {errors.senha && (
-          <span className="text-red-500">{errors.senha.message}</span>
+        {errors.password && (
+          <span className="text-red-500">{errors.password.message}</span>
         )}
 
         <button

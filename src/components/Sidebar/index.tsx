@@ -47,7 +47,7 @@ const Sidebar = () => {
                 TREINO FÁCIL
               </span>
               <span className="text-sm text-gray-600 leading-tight">
-                Nome da Academia
+                Academia FyqFyno
               </span>
             </div>
           )}

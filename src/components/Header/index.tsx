@@ -1,6 +1,7 @@
 import { ChevronDown } from 'lucide-react';
 import { useRef, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
+import { limparSessao } from "../../services/authService";
 
 const TITLES: Record<string, string> = {
   "/app/exercicios": "Dashboard do Aluno",
@@ -52,10 +53,35 @@ const Header = () => {
         navigate('/app/profile');
     }
 
-    const logout = () => {
-        alert('Logout realizado com sucesso!');
-        navigate('/');
+    const logout = async () => {
+      try {
+        await fetch("http://localhost:3000/api/logout", {
+          method: "POST",
+          credentials: "include", // se estiver usando cookies
+        });
+      } catch (err) {
+        console.error("Erro ao fazer logout:", err);
+      } finally {
+        limparSessao();
+        navigate("/login");
+      }
+    };
+  
+  const [nomeAluno, setNomeAluno] = useState<string | null>(null);
+
+  useEffect(() => {
+    const dadosUsuario = localStorage.getItem("usuarioLogado");
+    if (dadosUsuario) {
+      try {
+        const usuario = JSON.parse(dadosUsuario);
+        setNomeAluno(usuario.user.nome);
+      } catch (err) {
+        console.error("Erro ao recuperar usuário do localStorage", err);
+      }
     }
+  }, []);
+
+  
 
     return (
       <div className="grid grid-cols-3 items-center px-15 py-2 border-b border-gray-200">
@@ -75,7 +101,7 @@ const Header = () => {
             alt=""
             className="h-20 w-20 rounded-full"
           />
-          <h2>Nome do aluno</h2>
+          <h2>{nomeAluno}</h2>
           <ChevronDown color="#6C757D" />
         </div>
         <div

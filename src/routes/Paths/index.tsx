@@ -13,6 +13,7 @@ import Quests from "../../pages/Quests";
 import ExerciseDetails from "../../pages/ExerciseDetails";
 import QuestDetails from "../../pages/QuestDetails";
 import Profile from "../../pages/Profile";
+import PrivateRoute from "../../components/PrivateRoute";
 
 const Paths = () => {
   return (
@@ -25,7 +26,13 @@ const Paths = () => {
             <Route path="login" element={<Login />} />
             <Route path="*" element={<NotFound />} />
           </Route>
-          <Route path="/app" element={<LoggedLayout />}>
+          <Route
+            path="/app"
+            element={
+              <PrivateRoute>
+              <LoggedLayout />
+              </PrivateRoute>
+            }>
             <Route path='exercicios' element={<Dashboard />} />
             <Route path="exercicios/:id" element={<ExerciseDetails />} />
             <Route path='calendario' element={<Calendar />} />

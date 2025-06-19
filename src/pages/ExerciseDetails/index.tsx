@@ -1,7 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { usePageTitle } from "../../hooks/usePageTitle";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getDetalheExercicio } from "../../services/backendService";
 
 
 const exercisesData = {
@@ -89,9 +90,27 @@ const ExerciseDetails = () => {
   usePageTitle();
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const exercise = id ? exercisesData[id as keyof typeof exercisesData] : null;
+  const [exercise, setExercise] = useState<any | null>(null);
+  const [loading, setLoading] = useState(true);
   const [weight, setWeight] = useState(exercise?.weight ?? 20);
   const [notes, setNotes] = useState(exercise?.notes ?? "");
+
+  useEffect(() => {
+    const fetchDetails = async () => {
+      try {
+        if (!id) throw new Error("ID inválido");
+        const detalhe = await getDetalheExercicio(id);
+        setExercise(detalhe);
+      } catch (err) {
+        console.error("Erro ao carregar detalhes do exercício:", err);
+        setExercise(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDetails();
+  }, [id]);
 
   if (!exercise) {
     return (
@@ -118,27 +137,27 @@ const ExerciseDetails = () => {
           </button>
         </div>
         <h1 className="text-3xl font-bold text-gray-900 mb-8">
-          Exercício: {exercise.name}
+          Exercício: {exercise.exercicio.nome}
         </h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
-              <img
-                src={exercise.image}
-                alt={`Demonstração do exercício ${exercise.name}`}
-                className="w-200 h-100 rounded-xl"
-              />
+            <img
+              src="#"
+              alt={`Demonstração do exercício ${exercise.name}`}
+              className="w-200 h-100 rounded-xl"
+            />
 
             <div className="bg-white rounded-xl p-6">
               <h3 className="text-xl font-semibold text-gray-900 mb-4">
                 Instruções:
               </h3>
               <p className="text-gray-700 leading-relaxed">
-                {exercise.instructions}
+                {exercise.configuracao.observacoes_professor}
               </p>
             </div>
           </div>
-
+          
           <div className="space-y-6">
             <div className="bg-white rounded-xl p-6">
               <h3 className="text-xl font-semibold text-gray-900 mb-6">
@@ -149,14 +168,14 @@ const ExerciseDetails = () => {
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600">Séries:</span>
                   <span className="font-semibold text-gray-900">
-                    {exercise.series}
+                    {exercise.configuracao.series}
                   </span>
                 </div>
 
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600">Repetições:</span>
                   <span className="font-semibold text-gray-900">
-                    {exercise.repetitions}
+                    {exercise.configuracao.repeticoes}
                   </span>
                 </div>
 
@@ -193,7 +212,7 @@ const ExerciseDetails = () => {
                 Anotações:
               </h3>
               <textarea
-                value={notes}
+                value={exercise.configuracao.observacoes_aluno}
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder="Adicione suas anotações sobre este exercício..."
                 className="w-full h-32 p-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"

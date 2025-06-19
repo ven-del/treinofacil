@@ -5,7 +5,7 @@ import { useState } from "react";
 
 interface LoginFormInputs {
   email: string;
-  senha: string;
+  password: string;
 }
 
 const Login = () => {
@@ -52,13 +52,13 @@ const Login = () => {
         )}
 
         <input
-          {...register("senha", { required: "Senha é obrigatória" })}
+          {...register("password", { required: "Senha é obrigatória" })}
           type="password"
           placeholder="Senha"
           className="border p-2 rounded"
         />
-        {errors.senha && (
-          <span className="text-red-500">{errors.senha.message}</span>
+        {errors.password && (
+          <span className="text-red-500">{errors.password.message}</span>
         )}
 
         {loginError && <span className="text-red-500">{loginError}</span>}
