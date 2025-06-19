@@ -8,7 +8,7 @@ export type RegisterPayload = {
     image_url: string;
   };
   
-  const API_URL = 'http://localhost:3000';
+  const API_URL = import.meta.env.VITE_API_URL;
   
 export async function registerUser(data: RegisterPayload) {
     console.log('Dados que vão para o back: ', data)
@@ -48,7 +48,7 @@ export async function loginUser(data: { email: string; password: string }) {
 export async function getExerciciosDoDia() {
   const token = getTokenJWT();
   if (!token) throw new Error("Usuário não autenticado");
-  const response = await fetch(`http://localhost:3000/api/aluno/exercicios`, {
+  const response = await fetch(`${API_URL}/api/aluno/exercicios`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -68,7 +68,7 @@ export async function getExerciciosDoDia() {
 export async function getDetalheExercicio(treinoExercicioId: string) {
   const token = getTokenJWT();
   if (!token) throw new Error("Usuário não autenticado");
-  const response = await fetch(`http://localhost:3000/api/aluno/exercicios/${treinoExercicioId}`, {
+  const response = await fetch(`${API_URL}/api/aluno/exercicios/${treinoExercicioId}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -87,7 +87,7 @@ export async function getDetalheExercicio(treinoExercicioId: string) {
 export async function getPlanoDoAluno() {
   const token = getTokenJWT();
   if (!token) throw new Error("Usuário não autenticado");
-  const response = await fetch("http://localhost:3000/api/aluno/planos", {
+  const response = await fetch(`${API_URL}/api/aluno/planos`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -107,7 +107,7 @@ export async function getPlanoDoAluno() {
 export async function getQuestsDoAluno() {
   const token = getTokenJWT();
   if (!token) throw new Error("Usuário não autenticado");
-  const response = await fetch("http://localhost:3000/api/aluno/quests", {
+  const response = await fetch(`${API_URL}/api/aluno/quests`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
