@@ -8,7 +8,7 @@ export type RegisterPayload = {
     image_url: string;
   };
   
-  const API_URL = import.meta.env.VITE_API_URL;
+  const API_URL = import.meta.env.VITE_API_URL || 'https://labce-treinofacil-backend.vercel.app';
   
 export async function registerUser(data: RegisterPayload) {
     console.log('Dados que vão para o back: ', data)
