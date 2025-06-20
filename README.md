@@ -1,54 +1,93 @@
-# React + TypeScript + Vite
+# TreinoFacil
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Visão Geral
+O frontend `client/` é uma aplicação React criada com Vite para permitir que alunos visualizem e marquem seus exercícios diários.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### Estrutura de Pastas
+```
+client/
+├─ public/           # Arquivos estáticos
+├─ src/
+│  ├─ components/    # Componentes reutilizáveis (cards, botões, inputs)
+│  ├─ pages/         # Páginas (Dashboard, Login, Quests)
+│  ├─ services/      # Serviços de API (fetchers do Supabase)
+│  ├─ routes/        # Definição de rotas com React Router
+│  ├─ hooks/         # Hooks customizados (useAuth, useFetch)
+│  ├─ sections/      # Seções da landing page
+│  ├─ css/           # Pasta dedicada ao css do projeto
+│  ├─ App.tsx        # Componente raiz
+│  └─ main.tsx       # Ponto de entrada
+└─ vite.config.ts    # Configuração do Vite
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+## Variáveis de Ambiente
+No `client/.env` (adicionar no README principal também):
 ```
+VITE_API_URL=https://labce-treinofacil-backend.vercel.app
+```
+
+## Scripts Disponíveis
+```bash
+# Instalar dependências
+pm install
+
+# Iniciar modo desenvolvimento
+npm run dev
+
+# Build para produção
+npm run build
+
+# Servir build localmente
+npm run preview
+```
+
+## Consumo de API
+### Serviço de Autenticação (`services/auth.ts`)
+```ts
+interface LoginData { email: string; senha: string; }
+export async function login(data: LoginData) {
+  const res = await fetch(
+    `${import.meta.env.VITE_API_URL}/api/login`,
+    { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }
+  );
+  if (!res.ok) throw new Error('Falha no login');
+  const { token } = await res.json();
+  localStorage.setItem('token', token);
+  return token;
+}
+```
+
+### Serviço de Exercícios (`services/exercicio.ts`)
+```ts
+export async function getExerciciosDoDia(date: string) {
+  const token = localStorage.getItem('token');
+  const res = await fetch(
+    `${import.meta.env.VITE_API_URL}/api/aluno/exercicios?data=${date}`,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+  if (!res.ok) throw new Error('Erro ao buscar exercícios');
+  return res.json();
+}
+```
+
+## Componentes Principais
+- **LoginPage**: formulário de email/senha; chama `login()` e redireciona para `/dashboard`.
+- **Dashboard**: usa `useEffect` para chamar `getExerciciosDoDia(today)` e exibir lista; cada item em `ExerciseCard`.
+- **ExerciseCard**: exibe nome, série, repetições, ordem; inclui checkbox para `concluirExercicio()`.
+
+## Rotas
+Usa **React Router**:
+```tsx
+<Routes>
+  <Route path="/login" element={<LoginPage />} />
+  <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} />
+  <Route path="*" element={<Navigate to="/login" />} />
+</Routes>
+```
+
+## Autenticação
+- Token JWT armazenado em `localStorage`.
+- `Protected` verifica existência de token e redireciona para login se não estiver.
+
+---
+
